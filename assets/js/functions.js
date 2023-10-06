@@ -10,87 +10,75 @@ function nav(){
 	
 }
 
-/* function slider(){
-	$("#full-slide").carousel();
-
-	$(".item1").click(function(){
-		$("#full-slide").carousel(0)
-	});
-	$(".item2").click(function(){
-		$("#full-slide").carousel(1)
-	});
-	$(".item3").click(function(){
-		$("#full-slide").carousel(2)
-	});
-
-	$(".item3").click(function(){
-		$("#full-slide").carousel("prev")
-	});
-	$(".item2").click(function(){
-		$("#full-slide").carousel("prev")
-	});
-
-	$(".prev").click(function(){
-		$("#full-slide").carousel("prev")
-	});
-	$(".next").click(function(){
-		$("#full-slide").carousel("next")
-	});
-} */
-
 nav();
-// slider();
 
 });
 
-const buttons = document.querySelectorAll("[data-carousel-button]")
+
+const slides = document.querySelectorAll(".banner li")
+const nextBtn = document.querySelector(".next")
+const prevBtn = document.querySelector(".prev")
 var map = L.map('map').setView([51.505, -0.09], 13);
-
-buttons.forEach(button => {
-	button.addEventListener("click", () => {
-		const offset = button.dataset.carouselButton === "next" ? 1 : -1
-		// console.log(offset);
-		const slides = button.closest("[data-carousel]").querySelector("[data-slides]")
-
-		const activeSlide = slides.querySelector("[data-active]")
-		let newIndex = [...slides.children].indexOf(activeSlide) + offset
-		if (newIndex < 0) 
-			newIndex = slides.children.length - 1
-		if (newIndex >= slides.children.length) 
-			newIndex = 0
-		console.log(newIndex);
-
-		slides.children[newIndex].dataset.active = true
-		delete activeSlide.dataset.active
-	})
-})
-
+let counter = 0
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-L.marker([51.5, -0.09]).addTo(map)
-    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-    .openPopup();
-
-/* const prev = document.querySelector(".prev")
-const next = document.querySelector(".next")
-const ulBanner = document.querySelector(".banner")
-const liElements = ulBanner.getElementsByTagName("ul")
-
-prev.addEventListener("click", () => {
-	ulBanner.classList.add("active")
+nextBtn.addEventListener("click",function(){
+    counter++
+    carousel()
+})
+prevBtn.addEventListener("click",function(){
+    counter--
+    carousel()
 })
 
-const item1 = document.querySelector(".banner li:nth-child(1)");
-const item2 = document.querySelector(".banner li:nth-child(2)");
-const item3 = document.querySelector(".banner li:nth-child(3)");
-
-prev.addEventListener("click", () => {
-	if (item1.classList.contains("active")){
-		console.log("la classe est active");
-	}else{
-		console.log("la classe est active");
+function carousel(){
+	if (counter === slides.length){
+        counter = 0
+    }
+    if (counter <= 0){
+        counter = slides.length-1
+    }
+	if (!slides[0].classList.contains("li1")){
+		slides[0].classList.remove("active")
+		slides[1].classList.remove("active")
+		slides[2].classList.remove("active")
+	} else if (!slides[1].classList.contains("active")){
+		slides[0].classList.remove("active")
+		slides[1].classList.add("active")
+		slides[2].classList.remove("active")
+	} else if (!slides[2].classList.contains("active")){
+		slides[0].classList.remove("active")
+		slides[1].classList.remove("active")
+		slides[2].classList.add("active")
+	} else if (!slides[0].classList.contains("active")){
+		slides[0].classList.add("active")
+		slides[1].classList.remove("active")
+		slides[2].classList.remove("active")
 	}
-}) */
+	/* for (let i = 0; i < slides.length; i++) {
+		
+		// const element = array[index];
+		// if (slides[i].classList.contains("active") && counter === i){
+		// 	slides[i].classList.remove("active")
+		// }else{
+		// 	slides[i].classList.add("active")
+		// }
+		if (slides[i].classList.contains("li1") ){
+			slides[i].classList.contains("l")
+		}
+
+	} */
+
+	/* /* slides.forEach(function (slide) {
+        slide.classList.remove("active");
+		if (!slide.classList.contains("active"))
+			slide.classList.add("active");
+		else
+			slide.classList.remove("active");
+
+    });  */
+}
